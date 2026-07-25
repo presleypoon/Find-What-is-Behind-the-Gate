@@ -8,6 +8,7 @@ use texture::*;
 use render::*;
 
 use macroquad::prelude::*;
+use std::fs::read_to_string;
 
 #[macroquad::main("Find What is Behind the Gate")]
 async fn main() {
@@ -19,7 +20,7 @@ async fn main() {
 	let player: Player = Player::new();
 	println!("Player init suc.");
 
-	let world: World = World::empty();
+	let world: World = World::load_world(read_to_string("assets/level/level_1.txt").expect("Can't find level 1"));
 	println!("World init suc.");
 
 	build_textures_atlas();

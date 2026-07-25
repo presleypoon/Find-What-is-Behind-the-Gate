@@ -5,6 +5,6 @@ pub struct Player {
 }
 impl Player {
 	pub fn new() -> Self {
-		Player { pos: Vec2::ZERO }
+		Self { pos: Vec2::ZERO }
 	}
 }

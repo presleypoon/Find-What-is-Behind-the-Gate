@@ -29,6 +29,6 @@ impl Texture {
 			.expect("Can't find the image stone"),
 		);
 
-		Texture { dirt, grass, stone }
+		Self { dirt, grass, stone }
 	}
 }

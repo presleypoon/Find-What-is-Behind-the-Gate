@@ -4,3 +4,4 @@ version = "0.0.0-pr1"
 edition = "2024"
 
 [dependencies]
+macroquad = "0.4.15"

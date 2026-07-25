@@ -7,17 +7,29 @@ struct Texture {
 }
 impl Texture {
 	async fn new() -> Self {
-		Texture {
-			dirt: load_texture("assets/textures/blocks/dirt.png")
-				.await
-				.expect("Can't find the dirt texture"),
-			grass: load_texture("assets/textures/blocks/grass.png")
-				.await
-				.expect("Can't find the grass texture"),
-			stone: load_texture("assets/textures/blocks/stone.png")
-				.await
-				.expect("Can't find the stone texture"),
-		}
+		let dirt = Texture2D::from_image(
+			&Image::from_file_with_format(
+				include_bytes!("../assets/textures/blocks/dirt.png"),
+				Some(ImageFormat::Png),
+			)
+			.unwrap(),
+		);
+		let grass = Texture2D::from_image(
+			&Image::from_file_with_format(
+				include_bytes!("../assets/textures/blocks/grass.png"),
+				Some(ImageFormat::Png),
+			)
+			.unwrap(),
+		);
+		let stone = Texture2D::from_image(
+			&Image::from_file_with_format(
+				include_bytes!("../assets/textures/blocks/stone.png"),
+				Some(ImageFormat::Png),
+			)
+			.unwrap(),
+		);
+
+		Texture { dirt, grass, stone }
 	}
 }
 

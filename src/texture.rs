@@ -12,7 +12,7 @@ impl Texture {
 			include_bytes!("../assets/textures/tnf.png"),
 			Some(ImageFormat::Png),
 		)
-		.expect("Can't find tnf");
+		.expect("Can't find image tnf");
 
 		let dirt: Texture2D = Texture2D::from_image(
 			&Image::from_file_with_format(

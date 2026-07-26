@@ -8,12 +8,12 @@ use texture::*;
 use world::*;
 
 use macroquad::prelude::*;
-use std::{
-	fs::read_to_string,
-	time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
+use include_dir::{include_dir, Dir};
 
 const TPS: f32 = 60.0;
+
+static ASSETS: Dir = include_dir!("assets");
 
 fn window_conf() -> Conf {
 	Conf {
@@ -42,8 +42,7 @@ async fn main() {
 	let mut player: Player = Player::new();
 	println!("Player init suc.");
 
-	let world: World =
-		World::load_world(read_to_string("assets/level/level_1.txt").expect("Can't find level 1"));
+	let world: World = World::load_world();
 	println!("World init suc.");
 
 	build_textures_atlas();

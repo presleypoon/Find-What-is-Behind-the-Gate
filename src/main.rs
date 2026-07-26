@@ -1,18 +1,29 @@
 mod player;
-mod world;
-mod texture;
 mod render;
+mod texture;
+mod world;
 use player::*;
-use world::*;
-use texture::*;
 use render::*;
+use texture::*;
+use world::*;
 
 use macroquad::prelude::*;
-use std::fs::read_to_string;
+use std::{
+	fs::read_to_string,
+	time::{Duration, Instant},
+};
+
+const TPS: f32 = 60.0;
 
 #[macroquad::main("Find What is Behind the Gate")]
 async fn main() {
 	println!("Game Starts");
+
+	let tick_rate: Duration = Duration::from_secs_f32(1.0 / TPS);
+	let mut last_tick: Instant = Instant::now();
+	let mut accumlator: Duration = Duration::ZERO;
+	let running: bool = true;
+	println!("Time stuff init suc.");
 
 	let texture: Texture = Texture::new().await;
 	println!("Texture init suc.");
@@ -20,7 +31,8 @@ async fn main() {
 	let mut player: Player = Player::new();
 	println!("Player init suc.");
 
-	let world: World = World::load_world(read_to_string("assets/level/level_1.txt").expect("Can't find level 1"));
+	let world: World =
+		World::load_world(read_to_string("assets/level/level_1.txt").expect("Can't find level 1"));
 	println!("World init suc.");
 
 	build_textures_atlas();
@@ -32,7 +44,18 @@ async fn main() {
 			break;
 		}
 
-		player.r#move();
+		let elapsed = last_tick.elapsed();
+		last_tick = Instant::now();
+		accumlator += elapsed;
+
+		if running {
+			while accumlator >= tick_rate {
+				player.r#move();
+				accumlator -= tick_rate
+			}
+		} else {
+			accumlator = Duration::ZERO;
+		}
 
 		render(&player, &world, &texture);
 
@@ -41,4 +64,3 @@ async fn main() {
 
 	println!("Game exited");
 }
-

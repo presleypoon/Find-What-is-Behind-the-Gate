@@ -17,7 +17,7 @@ async fn main() {
 	let texture: Texture = Texture::new().await;
 	println!("Texture init suc.");
 
-	let player: Player = Player::new();
+	let mut player: Player = Player::new();
 	println!("Player init suc.");
 
 	let world: World = World::load_world(read_to_string("assets/level/level_1.txt").expect("Can't find level 1"));
@@ -31,6 +31,8 @@ async fn main() {
 			println!("ESC detected, program's ending");
 			break;
 		}
+
+		player.r#move();
 
 		render(&player, &world, &texture);
 

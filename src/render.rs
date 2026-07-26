@@ -20,8 +20,8 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 					Block::Dirt => &texture.dirt,
 					Block::Stone => &texture.stone,
 				},
-				player.pos.x - i as f32 * 16.0,
-				player.pos.y - i as f32 * 16.0,
+				j as f32 * 16.0 - player.pos.x,
+				i as f32 * 16.0 - player.pos.y,
 				WHITE,
 			)
 		}

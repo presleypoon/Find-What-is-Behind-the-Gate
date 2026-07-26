@@ -15,7 +15,18 @@ use std::{
 
 const TPS: f32 = 60.0;
 
-#[macroquad::main("Find What is Behind the Gate")]
+fn window_conf() -> Conf {
+	Conf {
+		window_title: "Find What is Behind the Gate".to_string(),
+		window_width: 800,
+		window_height: 600,
+		window_resizable: false,
+		// icon: (),
+		..Default::default()
+	}
+}
+
+#[macroquad::main(window_conf)]
 async fn main() {
 	println!("Game Starts");
 

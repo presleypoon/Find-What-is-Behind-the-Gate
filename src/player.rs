@@ -2,12 +2,14 @@ use macroquad::prelude::*;
 
 pub struct Player {
 	pub pos: Vec2,
+	sprite_sub_tick: u8,
 	pub sprite: u8,
 }
 impl Player {
 	pub fn new() -> Self {
 		Self {
 			pos: Vec2::ZERO,
+			sprite_sub_tick: 0,
 			sprite: 0,
 		}
 	}
@@ -30,6 +32,15 @@ impl Player {
 		}
 		if is_key_down(KeyCode::D) {
 			self.pos += vec2(VEL, 0.0);
+		}
+
+		self.sprite_sub_tick += 1;
+
+		while self.sprite_sub_tick > 10 {
+			self.sprite_sub_tick -= 10;
+			self.sprite += 1;
+
+			self.sprite %= 15;
 		}
 	}
 }

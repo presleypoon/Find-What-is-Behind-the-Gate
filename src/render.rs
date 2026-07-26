@@ -26,24 +26,11 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 			);
 		}
 	}
-	
-	draw_texture_ex(
-		&texture.player,
-		player.pos.x,
-		player.pos.y,
+
+	draw_texture(
+		&texture.player[(8 - player.sprite as isize).unsigned_abs()],
+		400.0,
+		400.0,
 		WHITE,
-		DrawTextureParams {
-			dest_size: Some(vec2(16.0, 16.0)),
-			source: Some(Rect {
-				x: (9.0 - player.sprite as f32).abs() * 16.0,
-				y: 0.0,
-				w: 16.0,
-				h: 16.0,
-			}),
-			rotation: 0.0,
-			flip_x: false,
-			flip_y: false,
-			pivot: None,
-		},
 	);
 }

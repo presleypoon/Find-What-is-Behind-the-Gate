@@ -1,3 +1,4 @@
+use crate::ASSETS;
 use macroquad::prelude::*;
 
 pub struct Texture {
@@ -8,98 +9,10 @@ pub struct Texture {
 }
 impl Texture {
 	pub async fn new() -> Self {
-		let tnf: Image = Image::from_file_with_format(
-			include_bytes!("../assets/textures/tnf.png"),
-			Some(ImageFormat::Png),
-		)
-		.expect("Can't find image tnf");
-
-		let dirt: Texture2D = Texture2D::from_image(
-			&Image::from_file_with_format(
-				include_bytes!("../assets/textures/blocks/dirt.png"),
-				Some(ImageFormat::Png),
-			)
-			.unwrap_or(tnf.clone()),
-		);
-		let grass: Texture2D = Texture2D::from_image(
-			&Image::from_file_with_format(
-				include_bytes!("../assets/textures/blocks/grass.png"),
-				Some(ImageFormat::Png),
-			)
-			.unwrap_or(tnf.clone()),
-		);
-		let stone: Texture2D = Texture2D::from_image(
-			&Image::from_file_with_format(
-				include_bytes!("../assets/textures/blocks/stone.png"),
-				Some(ImageFormat::Png),
-			)
-			.unwrap_or(tnf.clone()),
-		);
-		let player: [Texture2D; 9] = [
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/0.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/1.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/2.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/3.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/4.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/5.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/6.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/7.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-			Texture2D::from_image(
-				&Image::from_file_with_format(
-					include_bytes!("../assets/textures/entity/player/8.png"),
-					Some(ImageFormat::Png),
-				)
-				.unwrap_or(tnf.clone()),
-			),
-		];
+		let dirt = Self::load_block("dirt");
+		let grass = Self::load_block("grass");
+		let stone = Self::load_block("stone");
+		let player = Self::load_entity("player");
 
 		Self {
 			dirt,
@@ -107,5 +20,43 @@ impl Texture {
 			stone,
 			player,
 		}
+	}
+
+	fn load_block(name: &str) -> Texture2D {
+		Self::load_img(&format!("textures/blocks/{}.png", name))
+	}
+
+	fn load_entity<const N: usize>(name: &str) -> [Texture2D; N] {
+		let mut return_vec: Vec<Texture2D> = Vec::new();
+
+		for i in 0..N {
+			return_vec.push(Self::load_img(&format!(
+				"textures/entity/{}/{}.png",
+				name, i
+			)))
+		}
+
+		return_vec.try_into().unwrap_or_else(|_| unreachable!("Can't have less item in the list unless there's a iterate in the previous for loop, added 1 to i but not appended to the vec"))
+	}
+
+	fn load_img(path: &str) -> Texture2D {
+		let tnf_file = ASSETS.get_file("textures/tnf.png").expect("Can't find TNF");
+
+		Texture2D::from_image(
+			&Image::from_file_with_format(
+				ASSETS
+					.get_file(path)
+					.unwrap_or_else(|| {
+						eprintln!("Can't read content of {}", path);
+						tnf_file
+					})
+					.contents(),
+				Some(ImageFormat::Png),
+			)
+			.unwrap_or_else(|_| {
+				Image::from_file_with_format(tnf_file.contents(), Some(ImageFormat::Png))
+					.unwrap_or_else(|e| panic!("Can't decode textures/tnf.png with {}", e))
+			}),
+		)
 	}
 }

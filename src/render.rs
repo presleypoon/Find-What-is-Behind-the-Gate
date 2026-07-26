@@ -27,8 +27,8 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 						Block::Dirt => &texture.dirt,
 						Block::Stone => &texture.stone,
 					},
-					block_x - player.pos.x,
-					block_y - player.pos.y,
+					(block_x - player.pos.x).round(),
+					(block_y - player.pos.y).round(),
 					WHITE,
 				);
 			}

@@ -1,6 +1,7 @@
 use crate::ASSETS;
 use include_dir::File;
 use macroquad::prelude::*;
+use colored::*;
 
 pub struct Texture {
 	pub dirt: Texture2D,
@@ -47,7 +48,7 @@ impl Texture {
 				ASSETS
 					.get_file(path)
 					.unwrap_or_else(|| -> &File<'_> {
-						eprintln!("Can't read content of {}", path);
+						eprintln!("{}", format!("Can't read content of {}", path).red());
 						tnf_file
 					})
 					.contents(),

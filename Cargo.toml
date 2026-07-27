@@ -1,8 +1,9 @@
 [package]
 name = "find_what_is_behind_the_gate"
-version = "0.0.0-pr3"
+version = "0.0.0-pr4"
 edition = "2024"
 
 [dependencies]
 include_dir = "0.7.4"
 macroquad = "0.4.15"
+colored = "3.1.1"

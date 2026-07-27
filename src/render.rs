@@ -35,10 +35,24 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 		}
 	}
 
-	draw_texture(
+	draw_texture_ex(
 		&texture.player[(8 - player.sprite as isize).unsigned_abs()],
 		400.0,
 		300.0,
 		WHITE,
+		DrawTextureParams {
+			rotation: match player.dir {
+				Dir::N => 90.0_f32,
+				Dir::NE => 45.0,
+				Dir::E => 0.0,
+				Dir::SE => 315.0,
+				Dir::S => 270.0,
+				Dir::SW => 225.0,
+				Dir::W => 180.0,
+				Dir::NW => 135.0,
+			}
+			.to_radians(),
+			..Default::default()
+		},
 	);
 }

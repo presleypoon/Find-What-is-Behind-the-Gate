@@ -1,11 +1,13 @@
 use crate::ASSETS;
-use macroquad::prelude::*;
 use include_dir::File;
+use macroquad::prelude::*;
 
 pub struct Texture {
 	pub dirt: Texture2D,
 	pub grass: Texture2D,
 	pub stone: Texture2D,
+	pub gate_locked: Texture2D,
+	pub gate_unlocked: Texture2D,
 	pub player: [Texture2D; 9],
 }
 impl Texture {
@@ -13,14 +15,11 @@ impl Texture {
 		let dirt: Texture2D = Self::load_block("dirt");
 		let grass: Texture2D = Self::load_block("grass");
 		let stone: Texture2D = Self::load_block("stone");
+		let gate_locked: Texture2D = Self::load_block("gate_locked");
+		let gate_unlocked: Texture2D = Self::load_block("gate_unlocked");
 		let player: [Texture2D; 9] = Self::load_entity("player");
 
-		Self {
-			dirt,
-			grass,
-			stone,
-			player,
-		}
+		Self {dirt, grass, stone, gate_locked, gate_unlocked, player}
 	}
 
 	fn load_block(name: &str) -> Texture2D {

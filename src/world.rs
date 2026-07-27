@@ -8,6 +8,8 @@ pub enum Block {
 	Grass,
 	Dirt,
 	Stone,
+	GateLocked,
+	GateUnlocked,
 }
 pub struct World {
 	pub level: HashMap<(i32, i32), [[Block; 100]; 100]>,
@@ -47,6 +49,8 @@ impl World {
 								's' => *block = Block::Stone,
 								'g' => *block = Block::Grass,
 								'd' => *block = Block::Dirt,
+								'u' => *block = Block::GateUnlocked,
+								'l' => *block = Block::GateLocked,
 								'a' | ' ' => continue,
 								_ => unreachable!("Invalid level encoding"),
 							}
@@ -63,10 +67,33 @@ impl World {
 		Self { level }
 	}
 
-	pub fn get_block(&self, chunk_x: i32, chunk_y: i32, pos_x: usize, pos_y: usize) -> Block {
+	fn get_block(&self, chunk_x: i32, chunk_y: i32, pos_x: usize, pos_y: usize) -> Block {
 		self
 			.level
 			.get(&(chunk_x, chunk_y))
 			.unwrap_or(&[[Block::Air; 100]; 100])[pos_y][pos_x]
+	}
+
+	#[allow(dead_code)]
+	pub fn is_block(
+		&self,
+		chunk_x: i32,
+		chunk_y: i32,
+		pos_x: usize,
+		pos_y: usize,
+		block: Block,
+	) -> bool {
+		self.get_block(chunk_x, chunk_y, pos_x, pos_y) == block
+	}
+
+	pub fn is_it_one_of_these_blocks(
+		&self,
+		chunk_x: i32,
+		chunk_y: i32,
+		pos_x: usize,
+		pos_y: usize,
+		blocks: Vec<Block>,
+	) -> bool {
+		blocks.contains(&self.get_block(chunk_x, chunk_y, pos_x, pos_y))
 	}
 }

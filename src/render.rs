@@ -22,6 +22,8 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 						Block::Grass => &texture.grass,
 						Block::Dirt => &texture.dirt,
 						Block::Stone => &texture.stone,
+						Block::GateLocked => &texture.gate_locked,
+						Block::GateUnlocked => &texture.gate_unlocked,
 					},
 					(block_x - player.pos.x * 16.0).round(),
 					(block_y - player.pos.y * 16.0).round(),

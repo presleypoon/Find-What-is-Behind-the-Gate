@@ -1,3 +1,4 @@
+use crate::world::*;
 use macroquad::prelude::*;
 
 #[derive(Clone, Copy)]
@@ -21,38 +22,21 @@ pub struct Player {
 impl Player {
 	pub fn new() -> Self {
 		Self {
-			pos: Vec2::ZERO,
+			pos: vec2(25.0, 19.0),
 			sprite_sub_tick: 0,
 			sprite: 0,
 			dir: Dir::N,
 		}
 	}
 
-	pub fn r#move(&mut self) {
+	pub fn r#move(&mut self, world: &World) {
 		if !is_any_key_down() {
 			return;
 		}
 
-		const VEL: f32 = 0.8;
+		let key_in: Vec2 = Self::key_in();
 
-		let mut vel_after_key_press: Vec2 = Vec2::ZERO;
-
-		if is_key_down(KeyCode::W) {
-			self.pos += vec2(0.0, -VEL);
-			vel_after_key_press += vec2(0.0, 1.0);
-		}
-		if is_key_down(KeyCode::A) {
-			self.pos += vec2(-VEL, 0.0);
-			vel_after_key_press += vec2(-1.0, 0.0);
-		}
-		if is_key_down(KeyCode::S) {
-			self.pos += vec2(0.0, VEL);
-			vel_after_key_press += vec2(0.0, -1.0);
-		}
-		if is_key_down(KeyCode::D) {
-			self.pos += vec2(VEL, 0.0);
-			vel_after_key_press += vec2(1.0, 0.0);
-		}
+		self.change_pos(world, key_in);
 
 		self.sprite_sub_tick += 1;
 
@@ -63,7 +47,7 @@ impl Player {
 			self.sprite %= 15;
 		}
 
-		self.dir = match (vel_after_key_press.x, vel_after_key_press.y) {
+		self.dir = match (key_in.x, key_in.y) {
 			(1.0, 0.0) => Dir::N,
 			(1.0, 1.0) => Dir::NE,
 			(0.0, 1.0) => Dir::E,
@@ -74,5 +58,105 @@ impl Player {
 			(1.0, -1.0) => Dir::NW,
 			_ => self.dir,
 		}
+	}
+
+	fn change_pos(&mut self, world: &World, key_in: Vec2) {
+		const VEL: f32 = 0.8;
+
+		self.change_x(world, key_in.x * VEL);
+		self.change_y(world, -key_in.y * VEL);
+	}
+
+	fn change_x(&mut self, world: &World, x: f32) {
+		let sign_x: f32 = x.signum();
+
+		for _ in 0..((x * 80.0) as i32).unsigned_abs() {
+			self.pos.x += sign_x / 80.0;
+
+			if world.get_block(
+				(self.pos.x as i64 / 100) as i32,
+				(self.pos.y as i64 / 100) as i32,
+				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+			) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+			{
+				self.pos.x -= 0.2 * sign_x;
+				break;
+			}
+		}
+	}
+
+	fn change_y(&mut self, world: &World, y: f32) {
+		let sign_y: f32 = y.signum();
+
+		for _ in 0..((y * 80.0) as i32).unsigned_abs() {
+			self.pos.y += sign_y / 80.0;
+
+			if world.get_block(
+				(self.pos.x as i64 / 100) as i32,
+				(self.pos.y as i64 / 100) as i32,
+				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+			) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+				|| world.get_block(
+					(self.pos.x as i64 / 100) as i32,
+					(self.pos.y as i64 / 100) as i32,
+					((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+					((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
+				) == Block::Stone
+			{
+				self.pos.y -= 0.2 * sign_y;
+				break;
+			}
+		}
+	}
+
+	fn key_in() -> Vec2 {
+		let mut ret: Vec2 = Vec2::ZERO;
+
+		if is_key_down(KeyCode::W) {
+			ret += vec2(0.0, 1.0);
+		}
+		if is_key_down(KeyCode::A) {
+			ret += vec2(-1.0, 0.0);
+		}
+		if is_key_down(KeyCode::S) {
+			ret += vec2(0.0, -1.0);
+		}
+		if is_key_down(KeyCode::D) {
+			ret += vec2(1.0, 0.0);
+		}
+
+		ret
 	}
 }

@@ -1,5 +1,6 @@
 use crate::ASSETS;
 use macroquad::prelude::*;
+use include_dir::File;
 
 pub struct Texture {
 	pub dirt: Texture2D,
@@ -9,10 +10,10 @@ pub struct Texture {
 }
 impl Texture {
 	pub async fn new() -> Self {
-		let dirt = Self::load_block("dirt");
-		let grass = Self::load_block("grass");
-		let stone = Self::load_block("stone");
-		let player = Self::load_entity("player");
+		let dirt: Texture2D = Self::load_block("dirt");
+		let grass: Texture2D = Self::load_block("grass");
+		let stone: Texture2D = Self::load_block("stone");
+		let player: [Texture2D; 9] = Self::load_entity("player");
 
 		Self {
 			dirt,
@@ -36,26 +37,26 @@ impl Texture {
 			)))
 		}
 
-		return_vec.try_into().unwrap_or_else(|_| unreachable!("Can't have less item in the list unless there's a iterate in the previous for loop, added 1 to i but not appended to the vec"))
+		return_vec.try_into().unwrap_or_else(|_| -> [Texture2D; N] { unreachable!("Can't have less item in the list unless there's a iterate in the previous for loop, added 1 to i but not appended to the vec") })
 	}
 
 	fn load_img(path: &str) -> Texture2D {
-		let tnf_file = ASSETS.get_file("textures/tnf.png").expect("Can't find TNF");
+		let tnf_file: &File<'_> = ASSETS.get_file("textures/tnf.png").expect("Can't find TNF");
 
 		Texture2D::from_image(
 			&Image::from_file_with_format(
 				ASSETS
 					.get_file(path)
-					.unwrap_or_else(|| {
+					.unwrap_or_else(|| -> &File<'_> {
 						eprintln!("Can't read content of {}", path);
 						tnf_file
 					})
 					.contents(),
 				Some(ImageFormat::Png),
 			)
-			.unwrap_or_else(|_| {
+			.unwrap_or_else(|_| -> Image {
 				Image::from_file_with_format(tnf_file.contents(), Some(ImageFormat::Png))
-					.unwrap_or_else(|e| panic!("Can't decode textures/tnf.png with {}", e))
+					.unwrap_or_else(|e| -> Image { panic!("Can't decode textures/tnf.png with {}", e) })
 			}),
 		)
 	}

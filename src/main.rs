@@ -7,9 +7,9 @@ use render::*;
 use texture::*;
 use world::*;
 
+use include_dir::{Dir, include_dir};
 use macroquad::prelude::*;
 use std::time::{Duration, Instant};
-use include_dir::{include_dir, Dir};
 
 const TPS: f32 = 60.0;
 
@@ -54,13 +54,13 @@ async fn main() {
 			break;
 		}
 
-		let elapsed = last_tick.elapsed();
+		let elapsed: Duration = last_tick.elapsed();
 		last_tick = Instant::now();
 		accumlator += elapsed;
 
 		if running {
 			while accumlator >= tick_rate {
-				player.r#move();
+				player.r#move(&world);
 				accumlator -= tick_rate
 			}
 		} else {
@@ -69,6 +69,7 @@ async fn main() {
 
 		render(&player, &world, &texture);
 
+		println!("Player Pos: {}", player.pos);
 		next_frame().await;
 	}
 

@@ -1,7 +1,8 @@
 use crate::ASSETS;
+use include_dir::File;
 use std::collections::HashMap;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Block {
 	Air,
 	Grass,
@@ -15,14 +16,14 @@ impl World {
 	pub fn load_world() -> Self {
 		let data: &str = ASSETS
 			.get_file("level/data.txt")
-			.unwrap_or_else(|| panic!("Can't find text file data.txt"))
+			.unwrap_or_else(|| -> &File<'_> { panic!("Can't find text file data.txt") })
 			.contents_utf8()
-			.unwrap_or_else(|| panic!("Can't convert from file to string"));
+			.unwrap_or_else(|| -> &str { panic!("Can't convert from file to string") });
 
 		let mut level: HashMap<(i32, i32), [[Block; 100]; 100]> = HashMap::new();
 
 		for line_data in data.lines() {
-			if line_data.is_empty() {
+			if line_data.is_empty() || &line_data[0..2] == "//" {
 				continue;
 			}
 
@@ -34,9 +35,9 @@ impl World {
 				level.insert((x.parse().unwrap(), y.parse().unwrap()), {
 					let chunk: &str = ASSETS
 						.get_file(format!("level/{}", path))
-						.unwrap_or_else(|| panic!("Can't find text file {}", path))
+						.unwrap_or_else(|| -> &File<'_> { panic!("Can't find text file {}", path) })
 						.contents_utf8()
-						.unwrap_or_else(|| panic!("Can't convert {} from file to string", path));
+						.unwrap_or_else(|| -> &str { panic!("Can't convert {} from file to string", path) });
 
 					let mut this_chunk: [[Block; 100]; 100] = [[Block::Air; 100]; 100];
 
@@ -60,5 +61,12 @@ impl World {
 		}
 
 		Self { level }
+	}
+
+	pub fn get_block(&self, chunk_x: i32, chunk_y: i32, pos_x: usize, pos_y: usize) -> Block {
+		self
+			.level
+			.get(&(chunk_x, chunk_y))
+			.unwrap_or(&[[Block::Air; 100]; 100])[pos_y][pos_x]
 	}
 }

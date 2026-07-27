@@ -6,13 +6,13 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 	for ((x, y), chunk) in &world.level {
 		for (i, hor_slice) in chunk.iter().enumerate() {
 			let block_y: f32 = (y * 1600) as f32 + i as f32 * 16.0 + 300.0;
-			if block_y < player.pos.y * 16.0 - 1000.0 || block_y > player.pos.y * 16.0 + 1000.0 {
+			if block_y < player.pos.y * 16.0 - 16.0 || block_y > player.pos.y * 16.0 + 600.0 {
 				continue;
 			}
 			for (j, block) in hor_slice.iter().enumerate() {
 				let block_x: f32 = (x * 1600) as f32 + j as f32 * 16.0 + 400.0;
 
-				if block_x < player.pos.x * 16.0 - 1000.0 || block_x > player.pos.x * 16.0 + 1000.0 {
+				if block_x < player.pos.x * 16.0 - 16.0 || block_x > player.pos.x * 16.0 + 800.0 {
 					continue;
 				}
 

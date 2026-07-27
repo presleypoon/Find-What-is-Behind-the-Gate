@@ -21,6 +21,7 @@ I have included the exe file, double click it to run, but if you don't trust me 
     2. `g` is grass, walk-through
     3. `d` is grass, walk-through
     4. `a` or &#8203;` `&#8203; is air, walk-through
+6. Note: The files should be from `Ln 1` to `Ln 100`, and more will be truncated
 
 For example:
 

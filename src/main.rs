@@ -68,8 +68,6 @@ async fn main() {
 		}
 
 		render(&player, &world, &texture);
-
-		println!("Player Pos: {}", player.pos);
 		next_frame().await;
 	}
 

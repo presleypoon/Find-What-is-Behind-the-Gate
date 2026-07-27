@@ -17,7 +17,7 @@ I have included the exe file, double click it to run, but if you don't trust me 
 3. the format per level is `x y file_name_relative_to_data.txt`
 4. If you need to make a comment, start line with `//`
 5. Inside the file specified, the format is the following
-    1. `s` is stone, non walk-through (in the future)
+    1. `s` is stone, non walk-through
     2. `g` is grass, walk-through
     3. `d` is grass, walk-through
     4. `a` or &#8203;` `&#8203; is air, walk-through

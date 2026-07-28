@@ -14,12 +14,12 @@ I have included the exe file, double click it to run, but if you don't trust me 
 
 1. Start with `b` (block) or `e` (entity, for the future)
 2. For `b`:
-    1. Write the starting x coordinate, that number is the left of the `txt`
-    2. Then, write the starting y coordinate, that number is the top of the `txt`
-    3. After that, write the `txt`'s file name down, without `.txt`
-    4. In that `txt` file, you write the level from the x and y coordinate you given in 1 and 2
-        1. `d` is dirt
-        2. `g` is grass
-        3. `s` is stone
-        4. `a` or &#8203;` `&#8203; is air
+	1. Write the starting x coordinate, that number is the left of the `txt`
+	2. Then, write the starting y coordinate, that number is the top of the `txt`
+	3. After that, write the `txt`'s file name down, without `.txt`
+	4. In that `txt` file, you write the level from the x and y coordinate you given in 1 and 2
+		1. `d` is dirt
+		2. `g` is grass
+		3. `s` is stone
+		4. `a` or &#8203;` `&#8203; is air
 3. Make sure to compile the code again

@@ -12,20 +12,14 @@ I have included the exe file, double click it to run, but if you don't trust me 
 
 ## Customise Level
 
-1. There's some built in levels in `assets\level`
-2. you have to include it in `data.txt`
-3. the format per level is `x y file_name_relative_to_data.txt`
-4. If you need to make a comment, start line with `//`
-5. Inside the file specified, the format is the following
-    1. `s` is stone, non walk-through
-    2. `g` is grass, walk-through
-    3. `d` is grass, walk-through
-    4. `a` or &#8203;` `&#8203; is air, walk-through
-6. Note: The files should be from `Ln 1` to `Ln 100`, and more will be truncated
-
-For example:
-
-```plain text
-0 0 level-1_0.txt
--1 0 level0_0.txt
-```
+1. Start with `b` (block) or `e` (entity, for the future)
+2. For `b`:
+    1. Write the starting x coordinate, that number is the left of the `txt`
+    2. Then, write the starting y coordinate, that number is the top of the `txt`
+    3. After that, write the `txt`'s file name down, without `.txt`
+    4. In that `txt` file, you write the level from the x and y coordinate you given in 1 and 2
+        1. `d` is dirt
+        2. `g` is grass
+        3. `s` is stone
+        4. `a` or &#8203;` `&#8203; is air
+3. Make sure to compile the code again

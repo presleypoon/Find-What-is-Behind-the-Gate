@@ -1,2 +1,2 @@
--1 0 level-1_0.txt
-0 0 level0_0.txt
+b 0 0 level0_0
+b -100 0 level-1_0

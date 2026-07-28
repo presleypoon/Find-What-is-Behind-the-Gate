@@ -1,9 +1,10 @@
 use crate::ASSETS;
 use include_dir::File;
-use std::collections::HashMap;
+use signed_vec::*;
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Default)]
 pub enum Block {
+	#[default]
 	Air,
 	Grass,
 	Dirt,
@@ -12,7 +13,7 @@ pub enum Block {
 	GateUnlocked,
 }
 pub struct World {
-	pub level: HashMap<(i32, i32), [[Block; 100]; 100]>,
+	pub level: SignedVec<SignedVec<Block>>,
 }
 impl World {
 	pub fn load_world() -> Self {
@@ -22,78 +23,97 @@ impl World {
 			.contents_utf8()
 			.unwrap_or_else(|| -> &str { panic!("Can't convert from file to string") });
 
-		let mut level: HashMap<(i32, i32), [[Block; 100]; 100]> = HashMap::new();
+		let mut level: SignedVec<SignedVec<Block>> = SignedVec::new();
 
-		for line_data in data.lines() {
-			if line_data.is_empty() || &line_data[0..2] == "//" {
+		for line in data.lines() {
+			if line.is_empty() || line[0..2] == *"//" {
 				continue;
 			}
 
-			let words: Vec<&str> = line_data.split_whitespace().collect();
-
-			if let Ok(truncated_words) = words[..3].try_into() {
-				let [x, y, path] = truncated_words;
-
-				level.insert((x.parse().unwrap(), y.parse().unwrap()), {
-					let chunk: &str = ASSETS
-						.get_file(format!("level/{}", path))
-						.unwrap_or_else(|| -> &File<'_> { panic!("Can't find text file {}", path) })
-						.contents_utf8()
-						.unwrap_or_else(|| -> &str { panic!("Can't convert {} from file to string", path) });
-
-					let mut this_chunk: [[Block; 100]; 100] = [[Block::Air; 100]; 100];
-
-					for (line_chunk, hor_slice) in chunk.lines().zip(this_chunk.iter_mut()) {
-						for (r#char, block) in line_chunk.chars().zip(hor_slice.iter_mut()) {
-							match r#char {
-								's' => *block = Block::Stone,
-								'g' => *block = Block::Grass,
-								'd' => *block = Block::Dirt,
-								'u' => *block = Block::GateUnlocked,
-								'l' => *block = Block::GateLocked,
-								'a' | ' ' => continue,
-								_ => unreachable!("Invalid level encoding"),
-							}
-						}
-					}
-
-					this_chunk
-				})
-			} else {
-				continue;
-			};
+			match line.chars().nth(0).unwrap_or_else(|| -> char {
+				unreachable!(
+					"Can't have an string that is smaller than 1 char if 0 char is taken cared of in Ln 31"
+				)
+			}) {
+				'b' => Self::load_blocks(&mut level, line),
+				'e' => todo!(),
+				_ => unreachable!("Invalid data.txt format"),
+			}
 		}
 
 		Self { level }
 	}
 
-	fn get_block(&self, chunk_x: i32, chunk_y: i32, pos_x: usize, pos_y: usize) -> Block {
-		self
-			.level
-			.get(&(chunk_x, chunk_y))
-			.unwrap_or(&[[Block::Air; 100]; 100])[pos_y][pos_x]
+	fn load_blocks(level: &mut SignedVec<SignedVec<Block>>, line: &str) {
+		let mut chunks: std::str::SplitWhitespace<'_> = line.split_whitespace();
+
+		let _ = chunks.next();
+
+		let starting_x: &str = chunks
+			.next()
+			.unwrap_or_else(|| -> &str { unreachable!("Invalid encoding with var x") });
+		let starting_y: &str = chunks
+			.next()
+			.unwrap_or_else(|| -> &str { unreachable!("Invalid encoding with var y") });
+		let file: &str = chunks
+			.next()
+			.unwrap_or_else(|| -> &str { unreachable!("Invalid encoding with var file") });
+
+		let data: &str = ASSETS
+			.get_file(format!("level/{}.txt", file))
+			.unwrap_or_else(|| -> &File<'_> { unreachable!("Can't find text file {}.txt", file) })
+			.contents_utf8()
+			.unwrap_or_else(|| -> &str { unreachable!("Can't convert from file to string") });
+
+		for (y, line_data) in (starting_y.parse::<isize>().unwrap_or_else(|e: std::num::ParseIntError| -> isize {
+				unreachable!("Invalid base for y with {} error", e);
+			})..).zip(data.lines()) {
+			let mut val_y: SignedVec<Block> = SignedVec::new();
+
+			for (x, r#char) in (starting_x.parse::<isize>().unwrap_or_else(
+				|e: std::num::ParseIntError| -> isize {
+					unreachable!("Invalid base for x with {} error", e);
+				},
+			)..).zip(line_data.chars()) {
+				val_y.write_from_index(
+					x,
+					match r#char {
+						'g' => Block::Grass,
+						'd' => Block::Dirt,
+						's' => Block::Stone,
+						'l' => Block::GateLocked,
+						'u' => Block::GateUnlocked,
+						'a' | ' ' => Block::Air,
+						_ => unreachable!("Invalid letter encoding in {}, at {}:{}", file, x, y),
+					},
+					Block::Air,
+				);
+			}
+
+			level.write_from_index(y, val_y, SignedVec::new());
+		}
+	}
+
+	fn get_block(&self, pos_x: isize, pos_y: isize) -> Block {
+		*self.level.read_from_index(pos_y).read_from_index(pos_x)
 	}
 
 	#[allow(dead_code)]
 	pub fn is_block(
 		&self,
-		chunk_x: i32,
-		chunk_y: i32,
-		pos_x: usize,
-		pos_y: usize,
+		pos_x: isize,
+		pos_y: isize,
 		block: Block,
 	) -> bool {
-		self.get_block(chunk_x, chunk_y, pos_x, pos_y) == block
+		self.get_block(pos_x, pos_y) == block
 	}
 
 	pub fn is_it_one_of_these_blocks(
 		&self,
-		chunk_x: i32,
-		chunk_y: i32,
-		pos_x: usize,
-		pos_y: usize,
-		blocks: Vec<Block>,
+		pos_x: isize,
+		pos_y: isize,
+		blocks: &[Block],
 	) -> bool {
-		blocks.contains(&self.get_block(chunk_x, chunk_y, pos_x, pos_y))
+		blocks.contains(&self.get_block(pos_x, pos_y))
 	}
 }

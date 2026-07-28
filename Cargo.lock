@@ -90,6 +90,7 @@ dependencies = [
  "colored",
  "include_dir",
  "macroquad",
+ "signed_vec",
 ]
 
 [[package]]
@@ -284,6 +285,12 @@ checksum = "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "signed_vec"
+version = "1.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73dc8b996726313449a9cc767df6e52195c6c869fd48c62f73e40eb9012cb688"
 
 [[package]]
 name = "simd-adler32"

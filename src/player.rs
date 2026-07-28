@@ -73,31 +73,13 @@ impl Player {
 		for _ in 0..((x * 80.0) as i32).unsigned_abs() {
 			self.pos.x += sign_x / 80.0;
 
-			if world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) {
+			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
+
+			if world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+			{
 				self.pos.x -= 0.2 * sign_x;
 				break;
 			}
@@ -110,31 +92,13 @@ impl Player {
 		for _ in 0..((y * 80.0) as i32).unsigned_abs() {
 			self.pos.y += sign_y / 80.0;
 
-			if world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 16.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) || world.is_it_one_of_these_blocks(
-				(self.pos.x as i64 / 100) as i32,
-				(self.pos.y as i64 / 100) as i32,
-				((self.pos.x + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				((self.pos.y + 3.0 / 4.0) as isize).rem_euclid(100) as usize,
-				vec![Block::Stone, Block::GateLocked],
-			) {
+			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
+
+			if world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
+			{
 				self.pos.y -= 0.2 * sign_y;
 				break;
 			}

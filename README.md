@@ -8,7 +8,7 @@ Bugs are expected, especially in the pre-releases, if it is not in this files or
 
 ## exe
 
-I have included the exe file, double click it to run, but if you don't trust me or your CPU is not x86_64 Windows, make sure you have cargo downloaded and run `build.bat`
+I have included the exe file, double click it to run, but if you don't trust me or your CPU is not x86_64 Windows, make sure you have cargo downloaded (download from: [Rust Cargo Installation](https://doc.rust-lang.org/book/ch01-01-installation.html)) and run `build.bat`
 
 ## Customise Level
 

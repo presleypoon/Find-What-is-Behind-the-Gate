@@ -18,7 +18,7 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 				continue;
 			}
 
-			let block = hor_slice.read_from_index(x);
+			let block: &Block = hor_slice.unsure_read_from_index(x).unwrap_or(&Block::Air);
 
 			draw_texture(
 				match block {

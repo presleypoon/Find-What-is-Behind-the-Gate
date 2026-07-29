@@ -1,6 +1,6 @@
 @echo off
 set RUST_BACKTRACE=1
-cargo run
+cargo run > log.txt
 if %errorlevel% neq 0 (
 	goto err
 )

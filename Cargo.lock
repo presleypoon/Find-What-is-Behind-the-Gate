@@ -288,9 +288,9 @@ dependencies = [
 
 [[package]]
 name = "signed_vec"
-version = "1.0.14"
+version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8641857690cd9042bcf41ff9d4ddc88d4989aca3da23264029e35a63f001485"
+checksum = "98b6a230f9f920cee462382ccc7aca353fa4bacdb860bf0ec4c797329a1e3627"
 
 [[package]]
 name = "simd-adler32"

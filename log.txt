@@ -1,8 +1,0 @@
-Game Starts
-Time stuff init suc.
-Texture init suc.
-Player init suc.
-World init suc.
-Builded atlas
-ESC detected, program's ending
-Game exited

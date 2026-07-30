@@ -10,6 +10,7 @@ pub struct Texture {
 	pub gate_locked: Texture2D,
 	pub gate_unlocked: Texture2D,
 	pub player: [Texture2D; 9],
+	pub key: [Texture2D; 1],
 }
 impl Texture {
 	pub async fn new() -> Self {
@@ -19,8 +20,9 @@ impl Texture {
 		let gate_locked: Texture2D = Self::load_block("gate_locked");
 		let gate_unlocked: Texture2D = Self::load_block("gate_unlocked");
 		let player: [Texture2D; 9] = Self::load_entity("player");
+		let key: [Texture2D; 1] = Self::load_entity("key");
 
-		Self {dirt, grass, stone, gate_locked, gate_unlocked, player}
+		Self {dirt, grass, stone, gate_locked, gate_unlocked, player, key}
 	}
 
 	fn load_block(name: &str) -> Texture2D {

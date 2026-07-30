@@ -14,8 +14,15 @@ pub enum Block {
 	GateLocked,
 	GateUnlocked,
 }
+
+#[derive(Debug)]
+pub enum Entity {
+	Key(Vec<(i32, i32)>),
+}
+
 pub struct World {
 	pub level: SignedVec<SignedVec<Block>>,
+	pub entity: Vec<(i32, i32, Entity)>,
 }
 impl World {
 	pub fn load_world() -> Self {
@@ -26,6 +33,7 @@ impl World {
 			.unwrap_or_else(|| -> &str { panic!("Can't convert from file to string") });
 
 		let mut level: SignedVec<SignedVec<Block>> = SignedVec::new();
+		let mut entity: Vec<(i32, i32, Entity)> = Vec::new();
 
 		for line in data.lines() {
 			if line.is_empty() || line[0..2] == *"//" {
@@ -38,12 +46,12 @@ impl World {
 				)
 			}) {
 				'b' => Self::load_blocks(&mut level, line),
-				'e' => todo!(),
+				'e' => Self::load_entity(&mut entity, line),
 				_ => unreachable!("Invalid data.txt format"),
 			}
 		}
 
-		Self { level }
+		Self { level, entity }
 	}
 
 	fn load_blocks(level: &mut SignedVec<SignedVec<Block>>, line: &str) {
@@ -91,6 +99,37 @@ impl World {
 			}
 
 			level.write_from_index(y, val_y.clone(), SignedVec::new());
+		}
+	}
+
+	fn load_entity(entity: &mut Vec<(i32, i32, Entity)>, line: &str) {
+		let mut chunks: SplitWhitespace<'_> = line.split_whitespace();
+		let _ = chunks.next();
+		let x: i32 = chunks
+			.next()
+			.expect("No x coord provided for entity")
+			.parse::<i32>()
+			.expect("Can't decode entity's x");
+		let y: i32 = chunks
+			.next()
+			.expect("No y coord provided for entity")
+			.parse::<i32>()
+			.expect("Can't decode entity's y");
+		let name: &str = chunks.next().expect("No name provided for entity");
+
+		match name {
+			"key" => {
+				let mut gate_x_y: Vec<(i32, i32)> = Vec::new();
+
+				while let (Some(gate_x), Some(gate_y)) = (chunks.next(), chunks.next()) {
+					let gate_x: i32 = gate_x.parse::<i32>().expect("gate number x is not an int");
+					let gate_y: i32 = gate_y.parse::<i32>().expect("gate number y is not an int");
+					gate_x_y.push((gate_x, gate_y));
+				}
+
+				entity.push((x, y, Entity::Key(gate_x_y)));
+			}
+			_ => unreachable!("Invalid entity name"),
 		}
 	}
 

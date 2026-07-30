@@ -3,6 +3,13 @@ use macroquad::prelude::*;
 
 pub fn render(player: &Player, world: &World, texture: &Texture) {
 	clear_background(BLACK);
+
+	draw_blocks(player, world, texture);
+	draw_entities(player, world, texture);
+	draw_player(player, texture);
+}
+
+fn draw_blocks(player: &Player, world: &World, texture: &Texture) {
 	let y_range: (usize, usize) = world.level.range();
 	for y in (-(y_range.0 as isize))..(y_range.1 as isize) {
 		let block_y: f32 = y as f32 * 16.0 + 300.0;
@@ -35,7 +42,24 @@ pub fn render(player: &Player, world: &World, texture: &Texture) {
 			);
 		}
 	}
+}
 
+fn draw_entities(player: &Player, world: &World, texture: &Texture) {
+	for (x, y, entity) in &world.entity {
+		draw_texture(
+			match entity {
+				Entity::Key(..) => &texture.key[0],
+			},
+			((*x as f32 - player.pos.x) * 16.0).round() + 400.0,
+			((*y as f32 - player.pos.y) * 16.0).round() + 300.0,
+			WHITE,
+		);
+
+		println!("{}, {}, {:?}", x, y, entity);
+	}
+}
+
+fn draw_player(player: &Player, texture: &Texture) {
 	draw_texture_ex(
 		&texture.player[(8 - player.sprite as isize).unsigned_abs()],
 		400.0,

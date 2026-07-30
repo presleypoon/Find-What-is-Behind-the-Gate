@@ -85,7 +85,7 @@ dependencies = [
 
 [[package]]
 name = "find_what_is_behind_the_gate"
-version = "0.1.0"
+version = "0.2.0-pr1"
 dependencies = [
  "colored",
  "include_dir",

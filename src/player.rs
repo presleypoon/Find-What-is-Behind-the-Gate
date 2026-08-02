@@ -70,16 +70,28 @@ impl Player {
 	fn change_x(&mut self, world: &World, x: f32) {
 		let sign_x: f32 = x.signum();
 
-		for _ in 0..((x * 80.0) as i32).unsigned_abs() {
+		for _ in 0..((x * 50.0) as i32).unsigned_abs() {
 			self.pos.x += sign_x / 80.0;
 
 			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
 
-			if world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-			{
+			if world.is_it_one_of_these_blocks(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				blocks,
+			) {
 				self.pos.x -= 0.2 * sign_x;
 				break;
 			}
@@ -89,16 +101,28 @@ impl Player {
 	fn change_y(&mut self, world: &World, y: f32) {
 		let sign_y: f32 = y.signum();
 
-		for _ in 0..((y * 80.0) as i32).unsigned_abs() {
+		for _ in 0..((y * 50.0) as i32).unsigned_abs() {
 			self.pos.y += sign_y / 80.0;
 
 			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
 
-			if world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-				|| world.is_it_one_of_these_blocks(self.pos.x as isize, self.pos.y as isize, blocks)
-			{
+			if world.is_it_one_of_these_blocks(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+				blocks,
+			) || world.is_it_one_of_these_blocks(
+				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				blocks,
+			) {
 				self.pos.y -= 0.2 * sign_y;
 				break;
 			}

@@ -1,8 +1,9 @@
-use std::str::SplitWhitespace;
-
 use crate::ASSETS;
+use crate::entity::Entity;
+
 use include_dir::File;
 use signed_vec::*;
+use std::str::SplitWhitespace;
 
 #[derive(Clone, Copy, PartialEq, Default, Debug)]
 pub enum Block {
@@ -15,14 +16,9 @@ pub enum Block {
 	GateUnlocked,
 }
 
-#[derive(Debug)]
-pub enum Entity {
-	Key(Vec<(i32, i32)>),
-}
-
 pub struct World {
 	pub level: SignedVec<SignedVec<Block>>,
-	pub entity: Vec<(i32, i32, Entity)>,
+	pub entities: Vec<Option<(i32, i32, Entity)>>,
 }
 impl World {
 	pub fn load_world() -> Self {
@@ -33,7 +29,7 @@ impl World {
 			.unwrap_or_else(|| -> &str { panic!("Can't convert from file to string") });
 
 		let mut level: SignedVec<SignedVec<Block>> = SignedVec::new();
-		let mut entity: Vec<(i32, i32, Entity)> = Vec::new();
+		let mut entities: Vec<Option<(i32, i32, Entity)>> = Vec::new();
 
 		for line in data.lines() {
 			if line.is_empty() || line[0..2] == *"//" {
@@ -46,12 +42,12 @@ impl World {
 				)
 			}) {
 				'b' => Self::load_blocks(&mut level, line),
-				'e' => Self::load_entity(&mut entity, line),
+				'e' => Self::load_entities(&mut entities, line),
 				_ => unreachable!("Invalid data.txt format"),
 			}
 		}
 
-		Self { level, entity }
+		Self { level, entities }
 	}
 
 	fn load_blocks(level: &mut SignedVec<SignedVec<Block>>, line: &str) {
@@ -102,7 +98,7 @@ impl World {
 		}
 	}
 
-	fn load_entity(entity: &mut Vec<(i32, i32, Entity)>, line: &str) {
+	fn load_entities(entity: &mut Vec<Option<(i32, i32, Entity)>>, line: &str) {
 		let mut chunks: SplitWhitespace<'_> = line.split_whitespace();
 		let _ = chunks.next();
 		let x: i32 = chunks
@@ -127,32 +123,43 @@ impl World {
 					gate_x_y.push((gate_x, gate_y));
 				}
 
-				entity.push((x, y, Entity::Key(gate_x_y)));
+				entity.push(Some((x, y, Entity::Key(gate_x_y))));
 			}
 			_ => unreachable!("Invalid entity name"),
 		}
 	}
 
-	fn get_block(&self, pos_x: isize, pos_y: isize) -> Option<Block> {
-		if let Some(hor_slice) = self.level.unsure_read_from_index(pos_y) {
-			hor_slice.unsure_read_from_index(pos_x).copied()
+	pub fn change_block(&mut self, pos_x: i32, pos_y: i32, block: Block) {
+		let mut binding: SignedVec<SignedVec<Block>> = self.level.clone();
+
+		let row: &mut SignedVec<Block> = binding
+			.unsure_read_from_index_mut(pos_y as isize)
+			.expect("Try to assess out of the world using keys");
+
+		row.write_from_index(pos_x as isize, block, Block::Air);
+
+		self
+			.level
+			.write_from_index(pos_y as isize, row.clone(), SignedVec::new());
+	}
+
+	fn get_block(&self, pos_x: i32, pos_y: i32) -> Option<Block> {
+		if let Some(hor_slice) = self.level.unsure_read_from_index(pos_y as isize) {
+			hor_slice.unsure_read_from_index(pos_x as isize).copied()
 		} else {
 			None
 		}
 	}
 
 	#[allow(dead_code)]
-	pub fn is_block(&self, pos_x: isize, pos_y: isize, block: Block) -> bool {
+	pub fn is_block(&self, pos_x: i32, pos_y: i32, block: Block) -> bool {
 		self.get_block(pos_x, pos_y) == Some(block)
 	}
 
-	pub fn is_it_one_of_these_blocks(&self, pos_x: isize, pos_y: isize, blocks: &[Block]) -> bool {
-		blocks.contains(&{
-			let pos_block = self.get_block(pos_x, pos_y);
-			if pos_block.is_none() {
-				return false;
-			}
-			pos_block.unwrap_or_else(|| unreachable!("Impossible to reach, `None` cased covered"))
-		})
+	pub fn is_it_one_of_these_blocks(&self, pos_x: i32, pos_y: i32, blocks: &[Block]) -> bool {
+		self
+			.get_block(pos_x, pos_y)
+			.map(|block| -> bool { blocks.contains(&block) })
+			.unwrap_or(false)
 	}
 }

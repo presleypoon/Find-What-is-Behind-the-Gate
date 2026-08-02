@@ -1,4 +1,9 @@
-use crate::{player::*, texture::*, world::*};
+use crate::{
+	entity::*,
+	player::*,
+	texture::*,
+	world::*,
+};
 use macroquad::prelude::*;
 
 pub fn render(player: &Player, world: &World, texture: &Texture) {
@@ -45,17 +50,17 @@ fn draw_blocks(player: &Player, world: &World, texture: &Texture) {
 }
 
 fn draw_entities(player: &Player, world: &World, texture: &Texture) {
-	for (x, y, entity) in &world.entity {
-		draw_texture(
-			match entity {
-				Entity::Key(..) => &texture.key[0],
-			},
-			((*x as f32 - player.pos.x) * 16.0).round() + 400.0,
-			((*y as f32 - player.pos.y) * 16.0).round() + 300.0,
-			WHITE,
-		);
-
-		println!("{}, {}, {:?}", x, y, entity);
+	for i in 0..world.entities.len() {
+		if let Some((x, y, entity)) = &world.entities[i] {
+			draw_texture(
+				match entity {
+					Entity::Key(..) => &texture.key[0],
+				},
+				((*x as f32 - player.pos.x) * 16.0).round() + 400.0,
+				((*y as f32 - player.pos.y) * 16.0).round() + 300.0,
+				WHITE,
+			);
+		}
 	}
 }
 

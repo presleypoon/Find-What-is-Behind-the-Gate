@@ -1,6 +1,8 @@
 # Find What is Behind the Gate
 
-This is a RPG game, explore all you want
+This is a RPG game, explore all you want.
+
+Call this FWIBTG if you want.
 
 ## Bugs
 

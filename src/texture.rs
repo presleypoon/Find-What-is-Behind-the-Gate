@@ -1,7 +1,7 @@
 use crate::ASSETS;
+use colored::*;
 use include_dir::File;
 use macroquad::prelude::*;
-use colored::*;
 
 pub struct Texture {
 	pub dirt: Texture2D,
@@ -22,7 +22,15 @@ impl Texture {
 		let player: [Texture2D; 9] = Self::load_entity("player");
 		let key: [Texture2D; 1] = Self::load_entity("key");
 
-		Self {dirt, grass, stone, gate_locked, gate_unlocked, player, key}
+		Self {
+			dirt,
+			grass,
+			stone,
+			gate_locked,
+			gate_unlocked,
+			player,
+			key,
+		}
 	}
 
 	fn load_block(name: &str) -> Texture2D {

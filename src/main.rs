@@ -1,3 +1,4 @@
+mod entity;
 mod player;
 mod render;
 mod texture;
@@ -42,7 +43,7 @@ async fn main() {
 	let mut player: Player = Player::new();
 	println!("Player init suc.");
 
-	let world: World = World::load_world();
+	let mut world: World = World::load_world();
 	println!("World init suc.");
 
 	build_textures_atlas();
@@ -61,6 +62,7 @@ async fn main() {
 		if running {
 			while accumlator >= tick_rate {
 				player.r#move(&world);
+				world.entities_update(&player);
 				accumlator -= tick_rate
 			}
 		} else {

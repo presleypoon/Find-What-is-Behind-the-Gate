@@ -5,6 +5,6 @@ edition = "2024"
 
 [dependencies]
 include_dir = "0.7.4"
-macroquad = "0.4.15"
+macroquad = "0.4.16"
 colored = "3.1.1"
-signed_vec = "1.0.15"
+signed_vec = "1.0.17"

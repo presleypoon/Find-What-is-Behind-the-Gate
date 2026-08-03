@@ -1,6 +1,7 @@
 @echo off
 set RUST_BACKTRACE=1
 cargo run > log.txt
+@REM cargo run
 if %errorlevel% neq 0 (
 	goto err
 )

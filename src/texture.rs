@@ -49,13 +49,14 @@ impl Texture {
 				ASSETS
 					.get_file(path)
 					.unwrap_or_else(|| -> &File<'_> {
-						eprintln!("{}", format!("Can't read content of {path}").red());
+						eprintln!("{}", format!("Can't find {path}").red());
 						tnf_file
 					})
 					.contents(),
 				Some(ImageFormat::Png),
 			)
-			.unwrap_or_else(|_| -> Image {
+			.unwrap_or_else(|e| -> Image {
+				eprintln!("{}", format!("Can't read contents of {path}, with error {e}").red());
 				Image::from_file_with_format(tnf_file.contents(), Some(ImageFormat::Png))
 					.unwrap_or_else(|e| -> Image { panic!("Can't decode textures/tnf.png with {e}") })
 			}),

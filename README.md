@@ -28,7 +28,8 @@ I have included the exe file, double click it to run, but if you don't trust me 
 		1. `d` is dirt
 		2. `g` is grass
 		3. `s` is stone
-		4. `a` or &#8203;` `&#8203; is air
+		4. `·`, `╵`, `╶`, `└`, `╷`, `│`, `┌`, `├`, `╴`, `┘`, `─`, `┴`, `┐`, `┤`, `┬`, `┼` are cliffs, where there's line means there's connection
+		5. `a` or &#8203;` `&#8203; is air
 3. Make sure to compile the code again
 
 For some reason, it only works if there's only 1 block file in `data.txt`, if someone can help, it will be appreciated

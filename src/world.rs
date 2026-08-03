@@ -14,6 +14,7 @@ pub enum Block {
 	Stone,
 	GateLocked,
 	GateUnlocked,
+	Cliff(u8),
 }
 
 pub struct World {
@@ -67,8 +68,8 @@ impl World {
 			.next()
 			.unwrap_or_else(|| unreachable!("Invalide encoding with the var x"));
 		let data: &str = ASSETS
-			.get_file(format!("level/{}.txt", file))
-			.unwrap_or_else(|| -> &File<'_> { panic!("Can't find the text file {}.txt", file) })
+			.get_file(format!("level/{file}.txt"))
+			.unwrap_or_else(|| -> &File<'_> { panic!("Can't find the text file {file}.txt") })
 			.contents_utf8()
 			.unwrap_or_else(|| -> &str { panic!("Can't convert from file to string") });
 
@@ -87,8 +88,24 @@ impl World {
 					's' => Block::Stone,
 					'l' => Block::GateLocked,
 					'u' => Block::GateUnlocked,
+					'·' => Block::Cliff(0x0),
+					'╵' => Block::Cliff(0x1),
+					'╶' => Block::Cliff(0x2),
+					'└' => Block::Cliff(0x3),
+					'╷' => Block::Cliff(0x4),
+					'│' => Block::Cliff(0x5),
+					'┌' => Block::Cliff(0x6),
+					'├' => Block::Cliff(0x7),
+					'╴' => Block::Cliff(0x8),
+					'┘' => Block::Cliff(0x9),
+					'─' => Block::Cliff(0xA),
+					'┴' => Block::Cliff(0xB),
+					'┐' => Block::Cliff(0xC),
+					'┤' => Block::Cliff(0xD),
+					'┬' => Block::Cliff(0xE),
+					'┼' => Block::Cliff(0xF),
 					'a' | ' ' => Block::Air,
-					_ => unreachable!("Invalid level encoding in {}.txt", file),
+					_ => unreachable!("Invalid level encoding in {file}.txt"),
 				};
 
 				val_y.write_from_index(x, block, Block::Air);

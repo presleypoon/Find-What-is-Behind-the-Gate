@@ -1,9 +1,4 @@
-use crate::{
-	entity::*,
-	player::*,
-	texture::*,
-	world::*,
-};
+use crate::{entity::*, player::*, texture::*, world::*};
 use macroquad::prelude::*;
 
 pub fn render(player: &Player, world: &World, texture: &Texture) {
@@ -40,6 +35,7 @@ fn draw_blocks(player: &Player, world: &World, texture: &Texture) {
 					Block::Stone => &texture.stone,
 					Block::GateLocked => &texture.gate_locked,
 					Block::GateUnlocked => &texture.gate_unlocked,
+					Block::Cliff(state) => &texture.cliff[*state as usize],
 				},
 				(block_x - player.pos.x * 16.0).round(),
 				(block_y - player.pos.y * 16.0).round(),

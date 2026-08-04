@@ -92,7 +92,7 @@ impl Player {
 				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) {
-				self.pos.x -= 0.2 * sign_x;
+				self.pos.x -= sign_x / 80.0;
 				break;
 			}
 
@@ -103,11 +103,56 @@ impl Player {
 			{
 				if sign_x == -1.0 {
 					if (self.pos.x + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
-						self.pos.x -= 0.2 * sign_x;
+						self.pos.x -= sign_x / 80.0;
 						break;
 					}
 				} else if sign_x == 1.0 && (self.pos.x + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
-					self.pos.x -= 0.2 * sign_x;
+					self.pos.x -= sign_x / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+			) && matches!(block, Block::Cliff(4..16))
+			{
+				if sign_x == -1.0 {
+					if (self.pos.x + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.x -= sign_x / 80.0;
+						break;
+					}
+				} else if sign_x == 1.0 && (self.pos.x + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.x -= sign_x / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
+			) && matches!(block, Block::Cliff(4..16))
+			{
+				if sign_x == -1.0 {
+					if (self.pos.x + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.x -= sign_x / 80.0;
+						break;
+					}
+				} else if sign_x == 1.0 && (self.pos.x + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.x -= sign_x / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
+			) && matches!(block, Block::Cliff(4..16))
+			{
+				if sign_x == -1.0 {
+					if (self.pos.x + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.x -= sign_x / 80.0;
+						break;
+					}
+				} else if sign_x == 1.0 && (self.pos.x + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.x -= sign_x / 80.0;
 					break;
 				}
 			}
@@ -139,7 +184,7 @@ impl Player {
 				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) {
-				self.pos.y -= 0.2 * sign_y;
+				self.pos.y -= sign_y / 80.0;
 				break;
 			}
 
@@ -150,11 +195,56 @@ impl Player {
 			{
 				if sign_y == -1.0 {
 					if (self.pos.y + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
-						self.pos.y -= 0.2 * sign_y;
+						self.pos.y -= sign_y / 80.0;
 						break;
 					}
 				} else if sign_y == 1.0 && (self.pos.y + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
-					self.pos.y -= 0.2 * sign_y;
+					self.pos.y -= sign_y / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+			) && matches!(block, Block::Cliff(1 | 3 | 4..=7 | 9 | 11..=15))
+			{
+				if sign_y == -1.0 {
+					if (self.pos.y + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.y -= sign_y / 80.0;
+						break;
+					}
+				} else if sign_y == 1.0 && (self.pos.y + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.y -= sign_y / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
+			) && matches!(block, Block::Cliff(1 | 3 | 4..=7 | 9 | 11..=15))
+			{
+				if sign_y == -1.0 {
+					if (self.pos.y + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.y -= sign_y / 80.0;
+						break;
+					}
+				} else if sign_y == 1.0 && (self.pos.y + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.y -= sign_y / 80.0;
+					break;
+				}
+			}
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
+			) && matches!(block, Block::Cliff(1 | 3 | 4..=7 | 9 | 11..=15))
+			{
+				if sign_y == -1.0 {
+					if (self.pos.y + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.y -= sign_y / 80.0;
+						break;
+					}
+				} else if sign_y == 1.0 && (self.pos.y + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.y -= sign_y / 80.0;
 					break;
 				}
 			}

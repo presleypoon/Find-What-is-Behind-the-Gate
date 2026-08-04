@@ -23,7 +23,7 @@ fn window_conf() -> Conf {
 		window_width: 800,
 		window_height: 600,
 		window_resizable: false,
-		// icon: (),
+		icon: None,
 		..Default::default()
 	}
 }

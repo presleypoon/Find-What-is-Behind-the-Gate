@@ -29,7 +29,7 @@ impl Player {
 		}
 	}
 
-	pub fn r#move(&mut self, world: &World) {
+	pub fn update(&mut self, world: &World) {
 		if !is_any_key_down() {
 			return;
 		}
@@ -81,19 +81,35 @@ impl Player {
 				blocks,
 			) || world.is_it_one_of_these_blocks(
 				(self.pos.x + 3.0 / 16.0).floor() as i32,
-				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) || world.is_it_one_of_these_blocks(
-				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
 				(self.pos.y + 3.0 / 16.0).floor() as i32,
 				blocks,
 			) || world.is_it_one_of_these_blocks(
-				(self.pos.x + 12.0 / 16.0).floor() as i32,
-				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) {
 				self.pos.x -= 0.2 * sign_x;
 				break;
+			}
+
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+			) && matches!(block, Block::Cliff(4..16))
+			{
+				if sign_x == -1.0 {
+					if (self.pos.x + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.x -= 0.2 * sign_x;
+						break;
+					}
+				} else if sign_x == 1.0 && (self.pos.x + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.x -= 0.2 * sign_x;
+					break;
+				}
 			}
 		}
 	}
@@ -112,19 +128,35 @@ impl Player {
 				blocks,
 			) || world.is_it_one_of_these_blocks(
 				(self.pos.x + 3.0 / 16.0).floor() as i32,
-				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) || world.is_it_one_of_these_blocks(
-				(self.pos.x + 12.0 / 16.0).floor() as i32,
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
 				(self.pos.y + 3.0 / 16.0).floor() as i32,
 				blocks,
 			) || world.is_it_one_of_these_blocks(
-				(self.pos.x + 12.0 / 16.0).floor() as i32,
-				(self.pos.y + 12.0 / 16.0).floor() as i32,
+				(self.pos.x + 3.0 / 4.0).floor() as i32,
+				(self.pos.y + 3.0 / 4.0).floor() as i32,
 				blocks,
 			) {
 				self.pos.y -= 0.2 * sign_y;
 				break;
+			}
+
+			if let Some(block) = world.get_block(
+				(self.pos.x + 3.0 / 16.0).floor() as i32,
+				(self.pos.y + 3.0 / 16.0).floor() as i32,
+			) && matches!(block, Block::Cliff(1 | 3 | 4..=7 | 9 | 11..=15))
+			{
+				if sign_y == -1.0 {
+					if (self.pos.y + 3.0 / 16.0).fract() <= 1.0 / 8.0 {
+						self.pos.y -= 0.2 * sign_y;
+						break;
+					}
+				} else if sign_y == 1.0 && (self.pos.y + 3.0 / 4.0).fract() >= 7.0 / 8.0 {
+					self.pos.y -= 0.2 * sign_y;
+					break;
+				}
 			}
 		}
 	}

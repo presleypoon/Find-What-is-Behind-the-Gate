@@ -1,4 +1,5 @@
 mod entity;
+mod load_world;
 mod player;
 mod render;
 mod texture;
@@ -61,7 +62,7 @@ async fn main() {
 
 		if running {
 			while accumlator >= tick_rate {
-				player.r#move(&world);
+				player.update(&world);
 				world.entities_update(&player);
 				accumlator -= tick_rate
 			}

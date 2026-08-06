@@ -3,7 +3,7 @@ use std::str::SplitWhitespace;
 use include_dir::File;
 use signed_vec::*;
 
-use crate::{ASSETS, entity::Entity, world::*};
+use crate::{entity::Entity, world::*, ASSETS};
 
 impl World {
 	pub fn load_world() -> Self {
@@ -59,9 +59,7 @@ impl World {
 
 		for (row_offset, line_data) in data.lines().enumerate() {
 			let y: isize = starting_y + row_offset as isize;
-
 			let new: SignedVec<Block> = SignedVec::new();
-
 			let mut val_y: SignedVec<Block> = level.unsure_read_from_index(y).unwrap_or(&new).clone();
 
 			for (col_offset, r#char) in line_data.chars().enumerate() {

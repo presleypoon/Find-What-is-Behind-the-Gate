@@ -9,7 +9,7 @@ use render::*;
 use texture::*;
 use world::*;
 
-use include_dir::{Dir, include_dir};
+use include_dir::{include_dir, Dir};
 use macroquad::prelude::*;
 use std::time::{Duration, Instant};
 

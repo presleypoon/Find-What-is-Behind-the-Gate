@@ -26,7 +26,6 @@ fn draw_blocks(player: &Player, world: &World, texture: &Texture) {
 			}
 
 			let block: &Block = hor_slice.unsure_read_from_index(x).unwrap_or(&Block::Air);
-
 			draw_texture(
 				match block {
 					Block::Air => continue,

@@ -43,7 +43,6 @@ impl Player {
 		while self.sprite_sub_tick > 10 {
 			self.sprite_sub_tick -= 10;
 			self.sprite += 1;
-
 			self.sprite %= 15;
 		}
 
@@ -72,7 +71,6 @@ impl Player {
 
 		for _ in 0..((x * 50.0) as i32).unsigned_abs() {
 			self.pos.x += sign_x / 80.0;
-
 			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
 
 			if world.is_it_one_of_these_blocks(
@@ -164,7 +162,6 @@ impl Player {
 
 		for _ in 0..((y * 50.0) as i32).unsigned_abs() {
 			self.pos.y += sign_y / 80.0;
-
 			let blocks: &Vec<Block> = &vec![Block::Stone, Block::GateLocked];
 
 			if world.is_it_one_of_these_blocks(
@@ -270,3 +267,4 @@ impl Player {
 		ret
 	}
 }
+

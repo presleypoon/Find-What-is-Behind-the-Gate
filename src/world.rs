@@ -24,9 +24,7 @@ impl World {
 		let row: &mut SignedVec<Block> = binding
 			.unsure_read_from_index_mut(pos_y as isize)
 			.expect("Try to assess out of the world using keys");
-
 		row.write_from_index(pos_x as isize, block, Block::Air);
-
 		self
 			.level
 			.write_from_index(pos_y as isize, row.clone(), SignedVec::new());

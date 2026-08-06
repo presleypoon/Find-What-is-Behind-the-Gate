@@ -28,3 +28,4 @@ I have included the exe file, double click it to run, but if you don't trust me 
 3. Make sure to compile the code again
 
 For some reason, it only works if there's only 1 block file in `data.txt`, if someone can help, it will be appreciated
+

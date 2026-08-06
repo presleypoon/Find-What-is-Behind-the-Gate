@@ -14,7 +14,7 @@ I have included the exe file, double click it to run, but if you don't trust me 
 
 ## Customise Level
 
-1. Start with `b` (block) or `e` (entity, for the future)
+1. Start with `b` (block) or `e`
 2. For `b`:
 	1. Write the starting x coordinate, that number is the left of the `txt`
 	2. Then, write the starting y coordinate, that number is the top of the `txt`
@@ -25,7 +25,13 @@ I have included the exe file, double click it to run, but if you don't trust me 
 		3. `s` is stone
 		4. `·`, `╵`, `╶`, `└`, `╷`, `│`, `┌`, `├`, `╴`, `┘`, `─`, `┴`, `┐`, `┤`, `┬`, `┼` are cliffs, where there's line means there's connection
 		5. `a` or &#8203;` `&#8203; is air
-3. Make sure to compile the code again
+3. For `e`:
+	1. Write the x coordinate of that entity
+	2. Then, write the y coordiante of that entity
+	3. After that. write the entity's name
+	4. Finally, write the need arguments for each item, see below:
+		1. Keys: gate_x_0, gate_y_0, gate_x_1, gate_y_1, ..., gate_x_n-1, gate_y_n-1, gate_x_n, gate_y_n
+4. Make sure to compile the code again
 
 For some reason, it only works if there's only 1 block file in `data.txt`, if someone can help, it will be appreciated
 
